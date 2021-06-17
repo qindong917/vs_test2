@@ -43,9 +43,9 @@ public slots:
 
 private:
 	Ui::QtBatchWidgetsClass ui;
-	QStringList *list;
-	QStringList *mlist;
-	QStringList *replylist;
+	QStringList *list;//读出的原始数据
+	QStringList *mlist;//构建成JSON的请求数据
+	QStringList *replylist;//请求完成后的返回数据
 	QThreadPool *pool;
 
 	QStringListModel *Model;

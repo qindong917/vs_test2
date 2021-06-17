@@ -25,6 +25,8 @@ QtBatchWidgetsClass::QtBatchWidgetsClass(QWidget *parent)
 
 	replylist = new QStringList();
 
+	mlist = new QStringList();
+
 	ItemModel = new QStandardItemModel(this);
 
 	ui.pushButton_start->setEnabled(false);
@@ -39,9 +41,6 @@ int i = 2;
 int j = 0;
 void QtBatchWidgetsClass::on_pushButton_start_clicked()
 {
-
-
-	mlist = new QStringList();
 
 	QString pamars = list->at(1);
 
@@ -218,8 +217,10 @@ void QtBatchWidgetsClass::on_pushButton_select_file_clicked()
 	{
 
 		list->clear();
-
+		mlist->clear();
 		replylist->clear();
+
+		ItemModel->removeRows(0, ItemModel->rowCount());
 
 		while (!file.atEnd())
 		{
@@ -251,8 +252,6 @@ void QtBatchWidgetsClass::on_pushButton_select_file_clicked()
 		QModelIndex qindex = ItemModel->index(2, 0);   //Ä¬ÈÏÑ¡ÖÐ index
 
 		ui.listView->setCurrentIndex(qindex);
-
-
 
 		ui.listView->setModel(ItemModel);
 
@@ -315,8 +314,15 @@ void showMessageStr(QString msg)
 void QtBatchWidgetsClass::itemClicked(QModelIndex qIndex)
 {
 	qDebug() << qIndex.row() << "\n" << qIndex.data();
-
-	showMessageStr(replylist->at(qIndex.row()).toUtf8());
+	if (qIndex.row() >= replylist->size())
+	{
+		showMessageStr("no data");
+	}
+	else
+	{
+		showMessageStr(replylist->at(qIndex.row()).toUtf8());
+	}
+	
 }
 
 
