@@ -271,11 +271,11 @@ void QtBatchWidgetsClass::on_pushButton_select_file_clicked()
 void showMessageStr(QString msg)
 {
 
-	QTextCodec* g_pChnCodec = QTextCodec::codecForName("GBK");
+	QTextCodec *codec = QTextCodec::codecForName("GBK");
 
 	QPushButton *okbtn = new QPushButton(QString::fromLocal8Bit("¸´ÖÆÄÚÈÝ"));
 
-	QPushButton *cancelbtn = new QPushButton(g_pChnCodec->toUnicode(("¹Ø±Õ")));
+	QPushButton *cancelbtn = new QPushButton(codec->toUnicode(("¹Ø±Õ")));
 
 	QMessageBox *mymsgbox = new QMessageBox;
 
@@ -283,7 +283,7 @@ void showMessageStr(QString msg)
 
 	mymsgbox->addButton(cancelbtn, QMessageBox::RejectRole);
 
-	mymsgbox->setWindowTitle(g_pChnCodec->toUnicode("ÏêÏ¸"));
+	mymsgbox->setWindowTitle(codec->toUnicode("ÏêÏ¸"));
 
 	mymsgbox->setText(msg);
 
@@ -316,7 +316,7 @@ void QtBatchWidgetsClass::itemClicked(QModelIndex qIndex)
 {
 	qDebug() << qIndex.row() << "\n" << qIndex.data();
 
-	showMessageStr(replylist->at(qIndex.row()).toLocal8Bit());
+	showMessageStr(replylist->at(qIndex.row()).toUtf8());
 }
 
 
