@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <qDebug>
+#include <QTextCodec>
 #include <QLocalSocket>
 #include "ui_QtHelpUtil.h"
 
@@ -44,6 +45,9 @@ public slots:
 
 	QString zipAndEcode(QString msg);
 	QString dcodeAndUnzip(QString msg);
+
+	unsigned char * zipAndEcode(unsigned char * request, int nStrLen);
+	unsigned char * dcodeAndUnzip(unsigned char * request, int nStrLen);
 
 	void readFortune();
 	void displayError(QLocalSocket::LocalSocketError socketError);

@@ -94,6 +94,81 @@ QString QtHelpUtil::dcodeAndUnzip(QString request)
 	return resultStr;
 }
 
+unsigned char * QtHelpUtil::zipAndEcode(unsigned char * request, int nStrLen)
+{
+
+
+	EncryptHelper ^helper = gcnew EncryptHelper();
+
+	cli::array<unsigned char>^ dec = gcnew cli::array<unsigned char>(nStrLen);
+
+	for (int i = 0; i < nStrLen; i++)
+	{
+		dec[i] = request[i];
+	}
+
+	cli::array<unsigned char> ^Clipamarsarray2 = helper->ZipEncode(dec);//开始压缩
+
+	String^ key = gcnew String(desKey.c_str());//std::string->cli::String（方式2）
+
+	String ^ClipamarsStr = helper->EncryptDESECB(Clipamarsarray2, key);//开始DES加密
+
+	Text::Encoding ^u8 = Text::Encoding::UTF8;
+
+	cli::array<unsigned char> ^Clipamarsarray = u8->GetBytes(ClipamarsStr);//cli::String->cli::array<unsigned char>
+
+	unsigned char *b2 = new unsigned char(Clipamarsarray->Length);
+
+	for (int i = 0; i < Clipamarsarray->Length; i++)
+	{
+		b2[i] = Clipamarsarray[i];
+	}
+
+	return b2;
+}
+
+
+unsigned char * QtHelpUtil::dcodeAndUnzip(unsigned char * request, int nStrLen)
+{
+
+
+	cli::array<unsigned char>^ dec = gcnew cli::array<unsigned char>(nStrLen);
+
+	for (int i = 0; i < nStrLen; i++)
+	{
+		dec[i] = request[i];
+	}
+
+	String^ key = gcnew String(desKey.c_str());//std::string->cli::String（方式2）
+
+	QString resultStr;
+
+	try {
+		EncryptHelper ^helper = gcnew EncryptHelper();
+
+		Text::Encoding ^u8 = Text::Encoding::UTF8;
+
+		cli::array<unsigned char> ^p2cli = helper->DecryptDESECB(u8->GetString(dec), key);//开始DES解密
+
+		cli::array<unsigned char> ^p3cli = helper->ZipDecode(p2cli);//开始解压
+
+		unsigned char *b2 = new unsigned char(p3cli->Length);
+
+		for (int i = 0; i < p3cli->Length; i++)
+		{
+			b2[i] = p3cli[i];
+		}
+
+		return b2;
+	}
+	catch (...) {
+
+		return NULL;
+	}
+
+	return NULL;
+}
+
 
 void QtHelpUtil::initCliect()
 {
@@ -116,6 +191,14 @@ void QtHelpUtil::readFortune()
 {
 	// 读取接收到的数据
 	QTextStream stream(socket);
+
+	//QTextCodec::setCodecForLocale(QTextCodec::codecForName("GB2312")); //路径名支持中文
+	//QTextCodec::setCodecForTr(QTextCodec::codecForName("GB2312")); //QString支持中文
+	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName("GB2312")); //string支持中文
+
+	//后来去掉了那两行，将所有字符串到后使用tr()之后就能正常显示出中文了。
+
+	stream.setCodec(QTextCodec::codecForName("utf-8"));
 
 	QString respond = stream.readAll();
 
@@ -152,8 +235,16 @@ void QtHelpUtil::readFortune()
 
 void QtHelpUtil::sendMsg(QString msg)
 {
-	socket->write(msg.toStdString().c_str());
-	socket->flush();
+	//注意编码统一，真坑啊
+	//msg.toLocal8Bit();
+	//msg.toUtf8();
+	//msg.toLatin1();//是完全不懂的编码格式，千万不要混用了
+	//tr()是专门格式化std::数组的
+	QTextStream stream(socket);
+	stream.setCodec(QTextCodec::codecForName("utf-8"));
+	stream << tr(msg.toStdString().data());
+	//socket->write(msg.toStdString().data());
+	//socket->flush();
 }
 
 // 发生错误时，进行错误处理

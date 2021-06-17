@@ -64,7 +64,7 @@ QString PrintTask::UrlRequestPost(const QString url, const QString data, const Q
 	}
 
 	//ÇëÇó²ÎÊý
-	QNetworkReply *reply = qnam.post(qnr, data.toLocal8Bit());
+	QNetworkReply *reply = qnam.post(qnr, data.toUtf8());
 
 	QEventLoop eventloop;
 
@@ -82,9 +82,10 @@ QString PrintTask::UrlRequestPost(const QString url, const QString data, const Q
 		return "";
 	}
 
-	//QTextCodec *codec = QTextCodec::codecForName("utf8");
+	QTextCodec *codec = QTextCodec::codecForName("utf8");
 
-	QString replyData =QString::fromLocal8Bit( reply->readAll());
+	//QString replyData =QString::fromLocal8Bit( reply->readAll());
+	QString replyData = codec->toUnicode(reply->readAll());
 
 	reply->deleteLater();
 

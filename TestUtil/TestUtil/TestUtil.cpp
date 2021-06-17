@@ -68,6 +68,8 @@ void TestUtil::socketReadyReadHandler()
 	{
 		QTextStream stream(socket);
 
+		stream.setCodec(QTextCodec::codecForName("utf-8"));
+
 		QString qtpamarsStr = stream.readAll();
 
 		if (qtpamarsStr.startsWith("@") && Current_State == 0)
@@ -94,19 +96,23 @@ void TestUtil::socketReadyReadHandler()
 				qtpamarsStr = qtpamarsStr.mid(1, qtpamarsStr.length());
 			}	
 
-			ui.et_result->setText(qtpamarsStr.toLocal8Bit());
+			ui.et_result->setText(qtpamarsStr.toUtf8());
 
 		}
 		else
 		{
-
+			//注意编码统一，真坑啊
+			//msg.toLocal8Bit();
+			//msg.toUtf8();
+			//msg.toLatin1();//是完全不懂的编码格式，千万不要混用了
+			//tr()是专门格式化std::数组的
 			QJsonParseError err;
 
-			QJsonDocument jsonResponse = QJsonDocument::fromJson(qtpamarsStr.trimmed().toLocal8Bit(),&err);
+			QJsonDocument jsonResponse = QJsonDocument::fromJson(qtpamarsStr.toUtf8(),&err);
 
 			if (jsonResponse.isNull() || err.error != QJsonParseError::NoError)
 			{
-				ui.et_result->setText(qtpamarsStr.toLocal8Bit());
+				ui.et_result->setText(qtpamarsStr.toUtf8());
 
 				qDebug() << "QJsonParseError:" << err.errorString();
 			}
@@ -179,8 +185,17 @@ void TestUtil::sendMsg(QString msg)
 
 	if (socket)
 	{
-		socket->write(msg.toLocal8Bit());
-		socket->flush();
+
+		//注意编码统一，真坑啊
+		//msg.toLocal8Bit();
+		//msg.toUtf8();
+		//msg.toLatin1();//是完全不懂的编码格式，千万不要混用了
+		//tr()是专门格式化std::数组的
+		QTextStream stream(socket);
+		stream.setCodec(QTextCodec::codecForName("utf-8"));
+		stream << tr(msg.toStdString().data());
+		//socket->write(msg.toStdString().data());
+		//socket->flush();
 	}
 
 }
