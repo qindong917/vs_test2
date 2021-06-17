@@ -103,10 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Helpers">
-      <HintPath>..\..\QtWidgetsApplication1\QtWidgetsApplication1\Helpers.dll</HintPath>
+      <HintPath>Helpers.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\QtWidgetsApplication1\QtWidgetsApplication1\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
