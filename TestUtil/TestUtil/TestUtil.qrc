@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/TestUtil">
+        <file>images/logo.ico</file>
+        <file>images/delete.ico</file>
+        <file>images/delete_on.ico</file>
+    </qresource>
+</RCC>
