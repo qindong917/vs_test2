@@ -1042,7 +1042,38 @@ void TestUtil::closeEvent(QCloseEvent *event)
 
 	QString c = "taskkill /im QtHelpUtil.exe /f";
 	int pInt = QProcess::execute(c);    //关闭后台notepad.exe进程，阻塞式运行,一直占用cpu,成功返回0，失败返回1
+
 }
+void TestUtil::on_pushButton_adb_clicked()
+{
+	// 发送数据
+	//windows一定要用\\，真TM的坑
+	QString program = ".\\AdbWinUsbApi\\adb.exe";
+	QStringList arguments;
+	arguments << "devices";
+	adbProcess = new QProcess(this);
+	adbProcess->start(program, arguments);
+	adbProcess->waitForFinished();
+
+	QStringList outputData;
+	QByteArray output = adbProcess->readAllStandardOutput();
+	qDebug() << "output is: " << output;
+
+	//timer = new QTimer(this);
+	//connect(timer, SIGNAL(timeout()), this, SLOT(onSearchFinished()));
+	//timer->start(1000);
+}
+
+void TestUtil::onSearchFinished()
+{
+	
+	QStringList outputData;
+	QByteArray output = adbProcess->readAllStandardOutput();
+	qDebug() << "output is: " << output;
+	
+	//timer->stop();
+}
+
 
 
 

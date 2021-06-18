@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'TestUtilvbJiAC.ui'
+** Form generated from reading UI file 'TestUtilaBTvlN.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.10
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef TESTUTILVBJIAC_H
-#define TESTUTILVBJIAC_H
+#ifndef TESTUTILABTVLN_H
+#define TESTUTILABTVLN_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
@@ -52,7 +52,7 @@ public:
     QPushButton *pushButton_ecode;
     QPushButton *pushButton_dcode;
     QPushButton *pushButton_batch;
-    QPushButton *pushButton_8;
+    QPushButton *pushButton_adb;
     QPushButton *pushButton_9;
     QPushButton *pushButton_clear;
     QGroupBox *groupBox_2;
@@ -249,11 +249,11 @@ public:
 
         gridLayout_4->addWidget(pushButton_batch, 0, 5, 1, 1);
 
-        pushButton_8 = new QPushButton(groupBox);
-        pushButton_8->setObjectName(QString::fromUtf8("pushButton_8"));
-        pushButton_8->setMinimumSize(QSize(0, 50));
+        pushButton_adb = new QPushButton(groupBox);
+        pushButton_adb->setObjectName(QString::fromUtf8("pushButton_adb"));
+        pushButton_adb->setMinimumSize(QSize(0, 50));
 
-        gridLayout_4->addWidget(pushButton_8, 0, 6, 1, 1);
+        gridLayout_4->addWidget(pushButton_adb, 0, 6, 1, 1);
 
         pushButton_9 = new QPushButton(groupBox);
         pushButton_9->setObjectName(QString::fromUtf8("pushButton_9"));
@@ -313,7 +313,7 @@ public:
         pushButton_ecode->setText(QApplication::translate("TestUtilClass", "\345\212\240\345\257\206", nullptr));
         pushButton_dcode->setText(QApplication::translate("TestUtilClass", "\350\247\243\345\257\206", nullptr));
         pushButton_batch->setText(QApplication::translate("TestUtilClass", "\346\211\271\351\207\217\350\277\220\350\241\214", nullptr));
-        pushButton_8->setText(QApplication::translate("TestUtilClass", "\345\276\205\346\211\251\345\261\225", nullptr));
+        pushButton_adb->setText(QApplication::translate("TestUtilClass", "adb", nullptr));
         pushButton_9->setText(QApplication::translate("TestUtilClass", "\345\276\205\346\211\251\345\261\225", nullptr));
         pushButton_clear->setText(QApplication::translate("TestUtilClass", "\346\270\205\347\251\272", nullptr));
         groupBox_2->setTitle(QApplication::translate("TestUtilClass", "\350\277\224\345\233\236", nullptr));
@@ -327,4 +327,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // TESTUTILVBJIAC_H
+#endif // TESTUTILABTVLN_H

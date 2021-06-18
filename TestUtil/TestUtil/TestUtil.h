@@ -31,6 +31,7 @@
 #include <QProcess>
 #include <QCloseEvent>
 #include <QThreadPool>
+#include <QTimer>
 
 #include <iostream>
 #include <windows.h>
@@ -82,6 +83,8 @@ private:
 	QLocalServer *server;
 	QLocalSocket* socket;
 	QProcess *myProcess;
+	QProcess *adbProcess;
+	QTimer* timer;
 
 private slots:
 	void on_pushButton_clicked();
@@ -94,6 +97,7 @@ private slots:
 	void on_pushButton_dcode_clicked();
 	void on_pushButton_batch_clicked();
 	void on_pushButton_clear_clicked();
+	void on_pushButton_adb_clicked();
 
 
 
@@ -130,5 +134,7 @@ public slots:
 	void slot_ReplyData(QString data);
 
 	void slot_ErrorData(QString data);
+
+	void onSearchFinished();
 
 };

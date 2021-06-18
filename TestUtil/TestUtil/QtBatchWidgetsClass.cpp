@@ -11,6 +11,8 @@ QtBatchWidgetsClass::QtBatchWidgetsClass(QWidget *parent)
 	//item¼ä¾à
 	ui.listView->setSpacing(5);
 
+	//ui.listView->setStyleSheet("QListView::item{height:24px;}");
+
 	connect(ui.listView, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 
 	runingable = true;
@@ -75,8 +77,6 @@ void QtBatchWidgetsClass::on_pushButton_start_clicked()
 
 		QString strJson(byteArray);
 
-		qDebug() << strJson;
-
 		mlist->append(strJson);
 	}
 
@@ -98,8 +98,6 @@ void QtBatchWidgetsClass::on_pushButton_start_clicked()
 
 void QtBatchWidgetsClass::slot_ReplyData(QString data, int index)
 {
-
-	qDebug() << "void QtBatchWidgetsClass::slot_ReplyData(QString data, int index):" << data << "---->" << index;
 
 	if (!runingable)
 		return;
@@ -130,19 +128,19 @@ void QtBatchWidgetsClass::slot_ReplyData(QString data, int index)
 
 	label->setScaledContents(true);
 
-	label->setAlignment(Qt::AlignVCenter);
 
 	if (data != nullptr && data.contains("\"rst\":200"))
 	{
-		label->setStyleSheet("QLabel{background-color:rgb(169,208,245);font-size:22px;color:rgb(0, 0, 0);}");
+		label->setStyleSheet("QLabel{background-color:rgb(169,208,245);font-size:22px;color:rgb(0, 0, 0)}");
 	}
 	else
 	{
-		label->setStyleSheet("QLabel{background-color:rgb(245,169,169);font-size:22px;color:rgb(255, 255, 255);}");
+		label->setStyleSheet("QLabel{background-color:rgb(245,169,169);font-size:22px;color:rgb(255, 255, 255)}");
 	}
 
 
 	label->setText(list->at(index + 1));
+
 
 	ui.listView->setIndexWidget(qindex, label);
 
@@ -150,8 +148,6 @@ void QtBatchWidgetsClass::slot_ReplyData(QString data, int index)
 
 void QtBatchWidgetsClass::slot_ErrorData(QString data, int index)
 {
-
-	qDebug() << "void QtBatchWidgetsClass::slot_ErrorData(QString data, int index):" << data << "---->" << index;
 
 	replylist->append(data);
 
@@ -187,10 +183,10 @@ void QtBatchWidgetsClass::slot_ErrorData(QString data, int index)
 
 	label->setScaledContents(true);
 
-	label->setStyleSheet("QLabel{background-color:rgb(245,169,169);font-size:22px;color:rgb(255, 255, 255);}");
+	label->setStyleSheet("QLabel{background-color:rgb(245,169,169);font-size:22px;color:rgb(255, 255, 255)}");
 
 	label->setText(list->at(index + 1));
-
+	
 	ui.listView->setIndexWidget(qindex, label);
 }
 
@@ -255,8 +251,8 @@ void QtBatchWidgetsClass::on_pushButton_select_file_clicked()
 
 		ui.listView->setModel(ItemModel);
 
-		replylist->append("");
-		replylist->append("");
+		replylist->append("no data");
+		replylist->append("no data");
 		//ui.listView->setFixedSize(200, 300);
 
 
