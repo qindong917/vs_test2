@@ -13,3 +13,5 @@
 /TestUtil/x64/Release
 /TestUtil/x64/Release.zip
 /TestUtil/TestUtil/Release
+/.vs
+/QtHelpUtil/x64/Debug
