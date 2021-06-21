@@ -27,17 +27,15 @@ protected:
 	void closeEvent(QCloseEvent *event);
 
 private:
+
 	Ui::QtADBClass ui;
 	QProcess *adbProcess;
-	QStringListModel *Model;
-	QStandardItemModel *ItemModel;
+
+	QStringListModel *rightItemModel;
+	QStandardItemModel *leftItemModel;
 
 	QProcess *shell;
 	QProcess *adb;
-	QString currentDevice;
-	QStringListModel *model;
-	QStringList List;
-	bool gettingDir;
 
 public slots:
 	void itemClicked(QModelIndex);
@@ -45,4 +43,7 @@ public slots:
 	void outputReady();
 	void adbOutputReady();
 	void slotFinished(int);
+
+private slots:
+	void on_pushButton_refresh_clicked();
 };

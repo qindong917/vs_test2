@@ -1,16 +1,25 @@
 #include "QtADBClass.h"
 
+QStringList leftList;
+QStringList rightList;
+
 QtADBClass::QtADBClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
 
+	rightItemModel = new QStringListModel(this);
+
+	leftItemModel = new QStandardItemModel(this);
+
 	getDevices();
 
-	model = new QStringListModel(this);
+	//connect(ui.listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+	connect(ui.listView, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 
-	connect(ui.listView_2, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
-	//adb = new QProcess();
+	//connect(ui.listView_2, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
+	connect(ui.listView_2, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
+	
 }
 
 QtADBClass::~QtADBClass()
@@ -23,9 +32,8 @@ void QtADBClass::closeEvent(QCloseEvent *event)
 
 	QString c = "taskkill /im adb.exe /f";
 	int pInt = QProcess::execute(c);    //关闭后台notepad.exe进程，阻塞式运行,一直占用cpu,成功返回0，失败返回1
-	adbProcess->kill();
-//	shell->kill();
-	//adb->kill();
+
+	shell->kill();
 
 }
 
@@ -43,8 +51,6 @@ void QtADBClass::slotFinished(int state)
 void QtADBClass::getDevices()
 {
 
-	ItemModel = new QStandardItemModel(this);
-
 	//windows一定要用\\，真TM的坑
 	QString program = ".\\platform-tools\\adb.exe";
 	QStringList arguments;
@@ -57,8 +63,10 @@ void QtADBClass::getDevices()
 	QByteArray output = adbProcess->readAllStandardOutput();
 	qDebug() << "output is: " << output;
 
-	// now parse devices
-	QStringList devices;
+	leftList.clear();
+
+	leftItemModel->removeRows(0, leftItemModel->rowCount());
+
 	int lastItem = 0;
 	for (int i = 0; i < output.size(); i++)
 	{
@@ -74,24 +82,25 @@ void QtADBClass::getDevices()
 	{
 		if (i % 2 == 1)
 		{
-			devices << outputData[i];
-			qDebug() << devices;
+			//leftList << outputData[i];
+			leftList.append(outputData[i]);
+			qDebug() << leftList;
 		}
 	}
 
-	for (int i = 0; i < devices.size(); ++i) {
-		QStandardItem *item = new QStandardItem(devices.at(i));
+	for (int i = 0; i < leftList.size(); ++i) {
+		QStandardItem *item = new QStandardItem(leftList.at(i));
 
-		ItemModel->appendRow(item);
+		leftItemModel->appendRow(item);
 	}
 
-	QModelIndex qindex = ItemModel->index(0, 0);   //默认选中 index
+	QModelIndex qindex = leftItemModel->index(0, 0);   //默认选中 index
 
 	ui.listView->setCurrentIndex(qindex);
 
-	ui.listView->setModel(ItemModel);
+	ui.listView->setModel(leftItemModel);
 
-	connect(ui.listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+	adbProcess->kill();
 }
 
 void QtADBClass::itemClicked(QModelIndex qIndex)
@@ -99,7 +108,6 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 	qDebug() << qIndex.row() << "\n" << qIndex.data();
 
 	// start process
-	gettingDir = false;
 
 	shell = new QProcess();
 
@@ -131,17 +139,7 @@ void QtADBClass::outputReady()
 	qDebug() << "c:" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 	
 
-	if (gettingDir == true)
-	{
-		QByteArray outputData = shell->readAllStandardOutput();
-		qDebug() << "Current dir is: " << outputData;
-	
-		gettingDir = false;
-
-		return;
-	}
-
-	model->removeRows(0, model->rowCount());
+	rightItemModel->removeRows(0, rightItemModel->rowCount());
 
 	QByteArray outputData = shell->readAllStandardOutput();
 	int lastIndex = 0;
@@ -150,7 +148,7 @@ void QtADBClass::outputReady()
 	outputData.remove(0, 7);
 
 	// clear data
-	List.clear();
+	rightList.clear();
 
 	// parse data into list
 	for (int i = 0; i < outputData.size(); i++)
@@ -159,15 +157,15 @@ void QtADBClass::outputReady()
 		{
 			QString string = substring(QString(outputData), lastIndex, i);
 			lastIndex = i;
-			List << string;
+			rightList << string;
 		}
 	}
 
 	// set model list
-	model->setStringList(List);
-	ui.listView_2->setModel(model);
-	
+	rightItemModel->setStringList(rightList);
 
+	ui.listView_2->setModel(rightItemModel);
+	
 	qDebug() << "Good output is: " << outputData;
 }
 
@@ -212,6 +210,10 @@ void QtADBClass::adbOutputReady()
 	//QByteArray outputData = adb->readAllStandardOutput();
 
 	//qDebug() << "adb output: " << outputData;
+}
+void QtADBClass::on_pushButton_refresh_clicked()
+{
+	getDevices();
 }
 
 
