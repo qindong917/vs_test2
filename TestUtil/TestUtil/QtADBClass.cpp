@@ -8,6 +8,8 @@ QtADBClass::QtADBClass(QWidget *parent)
 	getDevices();
 
 	model = new QStringListModel(this);
+
+	connect(ui.listView_2, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
 	//adb = new QProcess();
 }
 
@@ -127,6 +129,7 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 void QtADBClass::outputReady()
 {
 	qDebug() << "c:" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+	
 
 	if (gettingDir == true)
 	{
@@ -137,6 +140,8 @@ void QtADBClass::outputReady()
 
 		return;
 	}
+
+	model->removeRows(0, model->rowCount());
 
 	QByteArray outputData = shell->readAllStandardOutput();
 	int lastIndex = 0;
@@ -161,8 +166,45 @@ void QtADBClass::outputReady()
 	// set model list
 	model->setStringList(List);
 	ui.listView_2->setModel(model);
+	
 
 	qDebug() << "Good output is: " << outputData;
+}
+
+void QtADBClass::itemClicked_2(QModelIndex qIndex)
+{
+	qDebug() << "6" << shell->state();
+	qDebug() << qIndex.data().toString();
+
+	QString data=qIndex.data().toString().trimmed();
+
+	if (data.endsWith("@")||data.endsWith("\\\\"))
+	{
+		data = data.mid(0, data.length() - 1);
+	}
+	if (data.endsWith("/r"))
+	{
+		data = data.mid(0, data.length() - 2);
+	}
+	if (data.endsWith("/"))
+	{
+		data = data.mid(0, data.length() - 1);
+	}
+	QString program = QString("cd %1\n").arg(data);
+
+	qDebug() <<"program:" << program;
+
+	shell->write(program.toLocal8Bit());
+
+	shell->write("clear\n");
+
+	shell->write("ls -F\n");
+
+	shell->waitForReadyRead();
+
+	qDebug() << "7" << shell->state();
+
+	outputReady();
 }
 
 void QtADBClass::adbOutputReady()

@@ -41,6 +41,7 @@ private:
 
 public slots:
 	void itemClicked(QModelIndex);
+	void itemClicked_2(QModelIndex);
 	void outputReady();
 	void adbOutputReady();
 	void slotFinished(int);
