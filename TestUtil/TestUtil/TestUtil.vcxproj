@@ -97,11 +97,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="TestUtil.qrc" />
+    <QtUic Include="QtADBClass.ui" />
     <QtUic Include="QtBatchWidgetsClass.ui" />
     <QtUic Include="TestUtil.ui" />
     <QtMoc Include="TestUtil.h" />
     <ClCompile Include="BatchTask.cpp" />
     <ClCompile Include="PrintTask.cpp" />
+    <ClCompile Include="QtADBClass.cpp" />
     <ClCompile Include="QtBatchWidgetsClass.cpp" />
     <ClCompile Include="QtContent.cpp" />
     <ClCompile Include="SqlUtil.cpp" />
@@ -112,6 +114,7 @@
     <QtMoc Include="PrintTask.h" />
     <QtMoc Include="QtBatchWidgetsClass.h" />
     <QtMoc Include="BatchTask.h" />
+    <QtMoc Include="QtADBClass.h" />
     <ClInclude Include="QtContent.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SqlUtil.h" />

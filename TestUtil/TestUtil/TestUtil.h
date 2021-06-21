@@ -37,6 +37,7 @@
 #include <windows.h>
 #include "SqlUtil.h"
 #include "printtask.h"
+#include "QtADBClass.h"
 
 #include <sstream>
 

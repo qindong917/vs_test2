@@ -55,6 +55,9 @@
     <ClCompile Include="BatchTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtADBClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SqlUtil.h">
@@ -77,9 +80,15 @@
     <QtMoc Include="BatchTask.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QtADBClass.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtBatchWidgetsClass.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtADBClass.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

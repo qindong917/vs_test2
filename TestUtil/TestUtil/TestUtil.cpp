@@ -1042,60 +1042,21 @@ void TestUtil::closeEvent(QCloseEvent *event)
 
 	QString c = "taskkill /im QtHelpUtil.exe /f";
 	int pInt = QProcess::execute(c);    //关闭后台notepad.exe进程，阻塞式运行,一直占用cpu,成功返回0，失败返回1
+	myProcess->kill();
 
 }
 
-QString substring(QString string, int start, int end)
-{
-	return string.mid(start, end - start);
-}
 void TestUtil::on_pushButton_adb_clicked()
 {
-	//windows一定要用\\，真TM的坑
-	QString program = ".\\platform-tools\\adb.exe";
-	QStringList arguments;
-	arguments << "devices";
-	adbProcess = new QProcess(this);
-	adbProcess->start(program, arguments);
-	adbProcess->waitForFinished();
+	QtADBClass *w;
 
-	QStringList outputData;
-	QByteArray output = adbProcess->readAllStandardOutput();
-	qDebug() << "output is: " << output;
+	w = new QtADBClass();
 
-	// now parse devices
-	QStringList devices;
-	int lastItem = 0;
-	for (int i = 0; i < output.size(); i++)
-	{
-		if (output[i] == '\n' || output[i] == '\t')
-		{
-			outputData << substring(QString(output), lastItem, i);
-			lastItem = i;
-		}
-	}
+	QTextCodec* g_pChnCodec = QTextCodec::codecForName("GBK");
 
-	// add to class device list array
-	for (int i = 1; i < outputData.size() - 1; i++)
-	{
-		if (i % 2 == 1)
-		{
-			devices << outputData[i];
-			qDebug() << devices;
-		}
-	}
+	w->setWindowTitle(g_pChnCodec->toUnicode("设备"));
 
-	//for (int i = 0; i < devices.size(); ++i) {
-	//	QStandardItem *item = new QStandardItem(devices.at(i));
-
-	//	ItemModel->appendRow(item);
-	//}
-
-	//QModelIndex qindex = ItemModel->index(0, 0);   //默认选中 index
-
-	//ui->listView->setCurrentIndex(qindex);
-
-	//ui->listView->setModel(ItemModel);
+	w->show();
 
 	//timer = new QTimer(this);
 	//connect(timer, SIGNAL(timeout()), this, SLOT(onSearchFinished()));
