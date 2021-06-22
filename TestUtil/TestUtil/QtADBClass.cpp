@@ -2,6 +2,7 @@
 
 QStringList leftList;
 QStringList rightList;
+QString command;
 
 QtADBClass::QtADBClass(QWidget *parent)
 	: QWidget(parent)
@@ -11,6 +12,8 @@ QtADBClass::QtADBClass(QWidget *parent)
 	rightItemModel = new QStringListModel(this);
 
 	leftItemModel = new QStandardItemModel(this);
+
+	adbProcess = new QProcess();
 
 	getDevices();
 
@@ -33,8 +36,6 @@ void QtADBClass::closeEvent(QCloseEvent *event)
 	QString c = "taskkill /im adb.exe /f";
 	int pInt = QProcess::execute(c);    //关闭后台notepad.exe进程，阻塞式运行,一直占用cpu,成功返回0，失败返回1
 
-	shell->kill();
-
 }
 
 QString QtADBClass::substring(QString string, int start, int end)
@@ -42,30 +43,37 @@ QString QtADBClass::substring(QString string, int start, int end)
 	return string.mid(start, end - start);
 }
 
-
-void QtADBClass::slotFinished(int state)
-{
-	qDebug() << "QtADBClass::slotFinished:"<< state;
-}
-
 void QtADBClass::getDevices()
 {
 
+	ui.textEdit_ml->setText("");
+	ui.textEdit_jg->setText("");
+
 	//windows一定要用\\，真TM的坑
-	QString program = ".\\platform-tools\\adb.exe";
-	QStringList arguments;
-	arguments << "devices";
-	adbProcess = new QProcess(this);
-	adbProcess->start(program, arguments);
-	adbProcess->waitForFinished();
+	command = ".\\platform-tools\\adb.exe devices";
+	
+	connect(adbProcess, SIGNAL(finished(int)), this, SLOT(slotadbProcessFinished(int))); //或者
+	adbProcess->start(command);
+
+	adbProcess->waitForReadyRead();
+
+	ui.textEdit_ml->append(command);
 
 	QStringList outputData;
+
 	QByteArray output = adbProcess->readAllStandardOutput();
+
+	ui.textEdit_jg->append(output);
+
 	qDebug() << "output is: " << output;
 
 	leftList.clear();
 
 	leftItemModel->removeRows(0, leftItemModel->rowCount());
+
+	rightList.clear();
+
+	rightItemModel->removeRows(0, rightItemModel->rowCount());
 
 	int lastItem = 0;
 	for (int i = 0; i < output.size(); i++)
@@ -99,8 +107,6 @@ void QtADBClass::getDevices()
 	ui.listView->setCurrentIndex(qindex);
 
 	ui.listView->setModel(leftItemModel);
-
-	adbProcess->kill();
 }
 
 void QtADBClass::itemClicked(QModelIndex qIndex)
@@ -115,64 +121,118 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 	connect(shell, SIGNAL(finished(int)), this, SLOT(slotFinished(int))); //或者
 
-	QString program = QString(".\\platform-tools\\adb.exe -s %1 shell").arg(qIndex.data().toString());
+	command = QString(".\\platform-tools\\adb.exe -s %1 shell").arg(qIndex.data().toString());
 
-	shell->start(program);
+	shell->start(command);
 
-	shell->waitForStarted();
-
-	shell->write("clear\n");
-
-	shell->write("ls -F\n");
-
-	qDebug() << "4" << shell->state();
+	ui.textEdit_ml->append(command);
 
 	shell->waitForReadyRead();
 
-	qDebug() << "5" << shell->state();
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	ui.textEdit_jg->append(outputData);
+
+	qDebug() << outputData;
+
+	command = QString("cd sdcard\n");
+
+	shell->write(command.toLocal8Bit());
+
+	ui.textEdit_ml->append(command);
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut()));
+
+	timer->start(200);
+
+
+}
+
+
+
+
+void QtADBClass::TimerOut()
+{
+	
+	//shell->write("clear\n");
+
+	command = QString("ls -F\n");
+
+	shell->write(command.toLocal8Bit());
+
+	ui.textEdit_ml->append(command);
+
+	shell->waitForReadyRead();
 
 	outputReady();
+
+	
 }
+
+void QtADBClass::TimerOut2()
+{
+	
+	timer->stop();
+
+	command = QString("ls -F\n");
+
+	shell->write(command.toLocal8Bit());
+
+	ui.textEdit_ml->append(command);
+
+	shell->waitForReadyRead();
+
+	outputReady();
+
+	
+}
+
+
 
 void QtADBClass::outputReady()
 {
-	qDebug() << "c:" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+	qDebug()<< QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 	
+	rightList.clear();
 
 	rightItemModel->removeRows(0, rightItemModel->rowCount());
 
 	QByteArray outputData = shell->readAllStandardOutput();
+
+	qDebug() << "Good output is: " << outputData;
+
+	ui.textEdit_jg->append(outputData);
+
 	int lastIndex = 0;
 
-	// get rid of first garbage characters
 	outputData.remove(0, 7);
-
-	// clear data
-	rightList.clear();
-
-	// parse data into list
+	
 	for (int i = 0; i < outputData.size(); i++)
 	{
 		if (outputData[i] == '\n')
 		{
 			QString string = substring(QString(outputData), lastIndex, i);
+
 			lastIndex = i;
+
 			rightList << string;
 		}
 	}
 
-	// set model list
 	rightItemModel->setStringList(rightList);
 
 	ui.listView_2->setModel(rightItemModel);
+
+	if (rightList.size() > 2)
+		timer->stop();
 	
-	qDebug() << "Good output is: " << outputData;
+	
 }
 
 void QtADBClass::itemClicked_2(QModelIndex qIndex)
 {
-	qDebug() << "6" << shell->state();
-	qDebug() << qIndex.data().toString();
 
 	QString data=qIndex.data().toString().trimmed();
 
@@ -188,29 +248,46 @@ void QtADBClass::itemClicked_2(QModelIndex qIndex)
 	{
 		data = data.mid(0, data.length() - 1);
 	}
-	QString program = QString("cd %1\n").arg(data);
 
-	qDebug() <<"program:" << program;
+	if (data.contains(" "))
+	{
+		data = data.split(" ").at(1);
+	}
+	
 
-	shell->write(program.toLocal8Bit());
+	command = QString("cd %1\n").arg(data);
 
-	shell->write("clear\n");
+	qDebug() << "command:" << command;
 
-	shell->write("ls -F\n");
+	shell->write(command.toLocal8Bit());
 
-	shell->waitForReadyRead();
+	ui.textEdit_ml->append(command);
+	//shell->write("clear\n");
 
-	qDebug() << "7" << shell->state();
+	timer = new QTimer(this);
 
-	outputReady();
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut2()));
+
+	timer->start(1000);
+
 }
 
 void QtADBClass::adbOutputReady()
 {
-	//QByteArray outputData = adb->readAllStandardOutput();
 
-	//qDebug() << "adb output: " << outputData;
 }
+void QtADBClass::slotadbProcessFinished(int state)
+{
+	qDebug() << "adbProcess::slotadbProcessFinished";
+}
+
+
+void QtADBClass::slotFinished(int state)
+{
+	qDebug() << "shell::slotFinished:" << state;
+}
+
+
 void QtADBClass::on_pushButton_refresh_clicked()
 {
 	getDevices();
