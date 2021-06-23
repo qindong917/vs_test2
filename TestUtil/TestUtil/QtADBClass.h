@@ -24,6 +24,7 @@ public:
 	~QtADBClass();
 	void getDevices();
 	QString substring(QString string, int start, int end);
+	void processEvent();
 
 protected:
 	void closeEvent(QCloseEvent *event);

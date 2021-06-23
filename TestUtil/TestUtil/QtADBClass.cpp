@@ -123,30 +123,27 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 	command = QString(".\\platform-tools\\adb.exe -s %1 shell").arg(qIndex.data().toString());
 
-	shell->start(command);
-
 	ui.textEdit_ml->append(command);
 
-	shell->waitForReadyRead();
+	shell->start(command);
+
+	shell->waitForStarted();
+
+	shell->waitForReadyRead(10);
+
+	qApp->processEvents();
 
 	QByteArray outputData = shell->readAllStandardOutput();
 
 	ui.textEdit_jg->append(outputData);
 
-	qDebug() << outputData;
-
-	command = QString("cd sdcard\n");
-
-	shell->write(command.toLocal8Bit());
-
-	ui.textEdit_ml->append(command);
+	qDebug() << "start--->" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 
 	timer = new QTimer(this);
 
 	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut()));
 
-	timer->start(200);
-
+	timer->start(0);
 
 }
 
@@ -154,17 +151,24 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 
 void QtADBClass::TimerOut()
-{
-	
+{	
+	//wait出问题看这个
+	//https://blog.csdn.net/yzt629/article/details/105777550
 	//shell->write("clear\n");
 
 	command = QString("ls -F\n");
 
+	qDebug() << "2" << shell->state();
+
 	shell->write(command.toLocal8Bit());
+
+	processEvent();
 
 	ui.textEdit_ml->append(command);
 
-	shell->waitForReadyRead();
+	shell->waitForReadyRead(10);
+
+	qApp->processEvents();
 
 	outputReady();
 
@@ -178,22 +182,31 @@ void QtADBClass::TimerOut2()
 
 	command = QString("ls -F\n");
 
+	qDebug() << "22" << shell->state();
+
 	shell->write(command.toLocal8Bit());
 
-	ui.textEdit_ml->append(command);
+	processEvent();
 
-	shell->waitForReadyRead();
+	ui.textEdit_ml->append(command);
 
 	outputReady();
 
 	
 }
 
+void QtADBClass::processEvent()
+{
+	shell->waitForReadyRead(10);
+
+	qApp->processEvents();
+}
+
 
 
 void QtADBClass::outputReady()
 {
-	qDebug()<< QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+	qDebug()<<"end--->" <<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 	
 	rightList.clear();
 
@@ -261,14 +274,17 @@ void QtADBClass::itemClicked_2(QModelIndex qIndex)
 
 	shell->write(command.toLocal8Bit());
 
+	processEvent();
+
 	ui.textEdit_ml->append(command);
 	//shell->write("clear\n");
 
+	qDebug() << "start--->" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 	timer = new QTimer(this);
 
 	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut2()));
 
-	timer->start(1000);
+	timer->start(0);
 
 }
 
