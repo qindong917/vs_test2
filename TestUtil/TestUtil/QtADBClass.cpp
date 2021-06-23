@@ -15,6 +15,12 @@ QtADBClass::QtADBClass(QWidget *parent)
 
 	adbProcess = new QProcess();
 
+	connect(adbProcess, SIGNAL(finished(int)), this, SLOT(slotadbProcessFinished(int))); //或者
+
+	shell = new QProcess();
+
+	connect(shell, SIGNAL(finished(int)), this, SLOT(slotFinished(int))); //或者
+
 	getDevices();
 
 	//connect(ui.listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
@@ -45,6 +51,11 @@ QString QtADBClass::substring(QString string, int start, int end)
 
 void QtADBClass::getDevices()
 {
+	if (shell->state() == QProcess::Running)
+	{
+		shell->write("exit\n");
+		processEvent();
+	}
 
 	ui.textEdit_ml->setText("");
 	ui.textEdit_jg->setText("");
@@ -52,7 +63,7 @@ void QtADBClass::getDevices()
 	//windows一定要用\\，真TM的坑
 	command = ".\\platform-tools\\adb.exe devices";
 	
-	connect(adbProcess, SIGNAL(finished(int)), this, SLOT(slotadbProcessFinished(int))); //或者
+	
 	adbProcess->start(command);
 
 	adbProcess->waitForReadyRead();
@@ -115,29 +126,29 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 	// start process
 
-	shell = new QProcess();
+	
+	if (shell->state() != QProcess::Running)
+	{
+		command = QString(".\\platform-tools\\adb.exe -s %1 shell").arg(qIndex.data().toString());
 
-	qDebug() << "1" << shell->state();
+		ui.textEdit_ml->append(command);
 
-	connect(shell, SIGNAL(finished(int)), this, SLOT(slotFinished(int))); //或者
+		shell->start(command);
 
-	command = QString(".\\platform-tools\\adb.exe -s %1 shell").arg(qIndex.data().toString());
+		shell->waitForStarted();
 
-	ui.textEdit_ml->append(command);
+		shell->waitForReadyRead(10);
 
-	shell->start(command);
+		qApp->processEvents();
 
-	shell->waitForStarted();
+		QByteArray outputData = shell->readAllStandardOutput();
 
-	shell->waitForReadyRead(10);
+		ui.textEdit_jg->append(outputData);
 
-	qApp->processEvents();
+		qDebug() << "start--->" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+	}
 
-	QByteArray outputData = shell->readAllStandardOutput();
-
-	ui.textEdit_jg->append(outputData);
-
-	qDebug() << "start--->" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+	
 
 	timer = new QTimer(this);
 
@@ -152,6 +163,8 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 void QtADBClass::TimerOut()
 {	
+
+	timer->stop();
 	//wait出问题看这个
 	//https://blog.csdn.net/yzt629/article/details/105777550
 	//shell->write("clear\n");
@@ -165,10 +178,6 @@ void QtADBClass::TimerOut()
 	processEvent();
 
 	ui.textEdit_ml->append(command);
-
-	shell->waitForReadyRead(10);
-
-	qApp->processEvents();
 
 	outputReady();
 
@@ -238,8 +247,7 @@ void QtADBClass::outputReady()
 
 	ui.listView_2->setModel(rightItemModel);
 
-	if (rightList.size() > 2)
-		timer->stop();
+	
 	
 	
 }
@@ -307,6 +315,32 @@ void QtADBClass::slotFinished(int state)
 void QtADBClass::on_pushButton_refresh_clicked()
 {
 	getDevices();
+}
+void QtADBClass::on_pushButton_refresh2_clicked()
+{
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut()));
+
+	timer->start(0);
+}
+void QtADBClass::on_pushButton_back_clicked()
+{
+	command = QString("cd ..\n");
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut()));
+
+	timer->start(0);
 }
 
 

@@ -54,4 +54,6 @@ public slots:
 
 private slots:
 	void on_pushButton_refresh_clicked();
+	void on_pushButton_refresh2_clicked();
+	void on_pushButton_back_clicked();
 };
