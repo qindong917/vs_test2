@@ -204,7 +204,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_7">
+     <layout class="QGridLayout" name="gridLayout_9">
       <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox_2">
         <property name="font">
@@ -216,8 +216,20 @@
         <property name="title">
          <string>路径</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout_9">
+        <layout class="QGridLayout" name="gridLayout_7">
          <item row="0" column="0">
+          <widget class="QLabel" name="label_lujing">
+           <property name="font">
+            <font>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QFrame" name="frame_3">
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
@@ -226,6 +238,24 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="pushButton_refresh2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>刷新</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="pushButton_back">
               <property name="sizePolicy">
@@ -254,32 +284,14 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="pushButton_refresh2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>刷新</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QListView" name="listView_2"/>
-         </item>
         </layout>
        </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QListView" name="listView_2"/>
       </item>
      </layout>
     </widget>

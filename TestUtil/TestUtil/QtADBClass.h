@@ -12,6 +12,8 @@
 #include <QInputDialog>
 #include <QDateTime>
 #include <QTimer>
+#include <QPoint>
+#include <QMenu>
 
 #include "ui_QtADBClass.h"
 
@@ -51,6 +53,10 @@ public slots:
 	void TimerOut2();
 	void slotFinished(int);
 	void slotadbProcessFinished(int);
+	void show_contextmenu1(const QPoint& pos);
+	void edit_menu1();
+	void edit_menu2();
+	void edit_menu3();
 
 private slots:
 	void on_pushButton_refresh_clicked();

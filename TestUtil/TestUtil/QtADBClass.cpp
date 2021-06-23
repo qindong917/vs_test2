@@ -28,11 +28,56 @@ QtADBClass::QtADBClass(QWidget *parent)
 
 	//connect(ui.listView_2, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
 	connect(ui.listView_2, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked_2(QModelIndex)));
+
+	ui.listView_2->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui.listView_2, SIGNAL(customContextMenuRequested(const QPoint&)),
+		this, SLOT(show_contextmenu1(const QPoint&)));
 	
 }
 
 QtADBClass::~QtADBClass()
 {
+
+}
+
+QModelIndex currentIndex;
+void QtADBClass::show_contextmenu1(const QPoint& pos)
+{
+	// if(cmenu)//保证同时只存在一个menu，及时释放内存
+	// {
+	// delete cmenu;
+	// cmenu = NULL;
+	// }
+	currentIndex = ui.listView_2->indexAt(pos);
+	qDebug() << "show_contextmenu1";
+	QMenu *cmenu = new QMenu(ui.listView_2);
+	QAction *down = cmenu->addAction(QString::fromLocal8Bit("下载"));
+	QAction *del = cmenu->addAction(QString::fromLocal8Bit("删除"));
+	QAction *update = cmenu->addAction(QString::fromLocal8Bit("上传"));
+;
+	connect(down, SIGNAL(triggered(bool)), this, SLOT(edit_menu1()));
+	connect(del, SIGNAL(triggered(bool)), this, SLOT(edit_menu2()));
+	connect(update, SIGNAL(triggered(bool)), this, SLOT(edit_menu3()));
+	cmenu->exec(QCursor::pos());//在当前鼠标位置显示
+	//cmenu->exec(pos)是在viewport显示
+
+}
+
+
+void QtADBClass::edit_menu1()
+{
+
+	qDebug() << "down:"<< currentIndex.row()<<"->"<<currentIndex.data();
+}
+
+void QtADBClass::edit_menu2()
+{
+	qDebug() << "del" << currentIndex.row() << "->" << currentIndex.data();
+}
+
+void QtADBClass::edit_menu3()
+{
+	qDebug() << "update" << currentIndex.row() << "->" << currentIndex.data();
 }
 
 void QtADBClass::closeEvent(QCloseEvent *event)

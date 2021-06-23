@@ -1,19 +1,20 @@
 /********************************************************************************
-** Form generated from reading UI file 'QtADBClassNnlvwv.ui'
+** Form generated from reading UI file 'QtADBClasstXIHzj.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.11
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef QTADBCLASSNNLVWV_H
-#define QTADBCLASSNNLVWV_H
+#ifndef QTADBCLASSTXIHZJ_H
+#define QTADBCLASSTXIHZJ_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
@@ -48,14 +49,15 @@ public:
     QGridLayout *gridLayout_3;
     QTextEdit *textEdit_ml;
     QFrame *frame_2;
-    QGridLayout *gridLayout_7;
-    QGroupBox *groupBox_2;
     QGridLayout *gridLayout_9;
+    QGroupBox *groupBox_2;
+    QGridLayout *gridLayout_7;
+    QLabel *label_lujing;
     QFrame *frame_3;
     QGridLayout *gridLayout_2;
+    QPushButton *pushButton_refresh2;
     QPushButton *pushButton_back;
     QFrame *frame_4;
-    QPushButton *pushButton_refresh2;
     QListView *listView_2;
 
     void setupUi(QWidget *QtADBClass)
@@ -204,17 +206,25 @@ public:
         frame_2->setObjectName(QString::fromUtf8("frame_2"));
         frame_2->setFrameShape(QFrame::StyledPanel);
         frame_2->setFrameShadow(QFrame::Raised);
-        gridLayout_7 = new QGridLayout(frame_2);
-        gridLayout_7->setSpacing(6);
-        gridLayout_7->setContentsMargins(11, 11, 11, 11);
-        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
-        groupBox_2 = new QGroupBox(frame_2);
-        groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setFont(font);
-        gridLayout_9 = new QGridLayout(groupBox_2);
+        gridLayout_9 = new QGridLayout(frame_2);
         gridLayout_9->setSpacing(6);
         gridLayout_9->setContentsMargins(11, 11, 11, 11);
         gridLayout_9->setObjectName(QString::fromUtf8("gridLayout_9"));
+        groupBox_2 = new QGroupBox(frame_2);
+        groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
+        groupBox_2->setFont(font);
+        gridLayout_7 = new QGridLayout(groupBox_2);
+        gridLayout_7->setSpacing(6);
+        gridLayout_7->setContentsMargins(11, 11, 11, 11);
+        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
+        label_lujing = new QLabel(groupBox_2);
+        label_lujing->setObjectName(QString::fromUtf8("label_lujing"));
+        QFont font1;
+        font1.setPointSize(9);
+        label_lujing->setFont(font1);
+
+        gridLayout_7->addWidget(label_lujing, 0, 0, 1, 1);
+
         frame_3 = new QFrame(groupBox_2);
         frame_3->setObjectName(QString::fromUtf8("frame_3"));
         frame_3->setFrameShape(QFrame::StyledPanel);
@@ -223,15 +233,21 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        pushButton_back = new QPushButton(frame_3);
-        pushButton_back->setObjectName(QString::fromUtf8("pushButton_back"));
+        pushButton_refresh2 = new QPushButton(frame_3);
+        pushButton_refresh2->setObjectName(QString::fromUtf8("pushButton_refresh2"));
         QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(pushButton_refresh2->sizePolicy().hasHeightForWidth());
+        pushButton_refresh2->setSizePolicy(sizePolicy3);
+        pushButton_refresh2->setFont(font1);
+
+        gridLayout_2->addWidget(pushButton_refresh2, 0, 2, 1, 1);
+
+        pushButton_back = new QPushButton(frame_3);
+        pushButton_back->setObjectName(QString::fromUtf8("pushButton_back"));
         sizePolicy3.setHeightForWidth(pushButton_back->sizePolicy().hasHeightForWidth());
         pushButton_back->setSizePolicy(sizePolicy3);
-        QFont font1;
-        font1.setPointSize(9);
         pushButton_back->setFont(font1);
 
         gridLayout_2->addWidget(pushButton_back, 0, 0, 1, 1);
@@ -243,24 +259,16 @@ public:
 
         gridLayout_2->addWidget(frame_4, 0, 1, 1, 1);
 
-        pushButton_refresh2 = new QPushButton(frame_3);
-        pushButton_refresh2->setObjectName(QString::fromUtf8("pushButton_refresh2"));
-        sizePolicy3.setHeightForWidth(pushButton_refresh2->sizePolicy().hasHeightForWidth());
-        pushButton_refresh2->setSizePolicy(sizePolicy3);
-        pushButton_refresh2->setFont(font1);
 
-        gridLayout_2->addWidget(pushButton_refresh2, 0, 2, 1, 1);
+        gridLayout_7->addWidget(frame_3, 1, 0, 1, 1);
 
 
-        gridLayout_9->addWidget(frame_3, 0, 0, 1, 1);
+        gridLayout_9->addWidget(groupBox_2, 0, 0, 1, 1);
 
-        listView_2 = new QListView(groupBox_2);
+        listView_2 = new QListView(frame_2);
         listView_2->setObjectName(QString::fromUtf8("listView_2"));
 
         gridLayout_9->addWidget(listView_2, 1, 0, 1, 1);
-
-
-        gridLayout_7->addWidget(groupBox_2, 0, 0, 1, 1);
 
 
         gridLayout_8->addWidget(frame_2, 0, 1, 1, 1);
@@ -288,8 +296,9 @@ public:
         pushButton_refresh_2->setText(QString());
         groupBox_4->setTitle(QApplication::translate("QtADBClass", "\345\221\275\344\273\244\350\241\214", nullptr));
         groupBox_2->setTitle(QApplication::translate("QtADBClass", "\350\267\257\345\276\204", nullptr));
-        pushButton_back->setText(QApplication::translate("QtADBClass", "<  \350\277\224\345\233\236", nullptr));
+        label_lujing->setText(QString());
         pushButton_refresh2->setText(QApplication::translate("QtADBClass", "\345\210\267\346\226\260", nullptr));
+        pushButton_back->setText(QApplication::translate("QtADBClass", "<  \350\277\224\345\233\236", nullptr));
     } // retranslateUi
 
 };
@@ -300,4 +309,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // QTADBCLASSNNLVWV_H
+#endif // QTADBCLASSTXIHZJ_H
