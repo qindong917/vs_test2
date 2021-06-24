@@ -68,6 +68,17 @@ void QtADBClass::edit_menu1()
 {
 
 	qDebug() << "down:"<< currentIndex.row()<<"->"<<currentIndex.data();
+
+	//子窗口和主窗口用法不同
+	QFileDialog *fd = new QFileDialog(this, Qt::SubWindow);
+
+	fd->setOption(QFileDialog::DontUseNativeDialog, true);
+
+	QString fileName = fd->getExistingDirectory(0, "Save File", "D:\\", QFileDialog::DontUseNativeDialog);
+
+
+
+	qDebug() << fileName;
 }
 
 void QtADBClass::edit_menu2()
