@@ -238,7 +238,17 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
-            <item row="0" column="2">
+            <item row="0" column="1">
+             <widget class="QFrame" name="frame_4">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
              <widget class="QPushButton" name="pushButton_refresh2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -274,13 +284,15 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QFrame" name="frame_4">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="pushButton_getlj">
+              <property name="font">
+               <font>
+                <pointsize>9</pointsize>
+               </font>
               </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
+              <property name="text">
+               <string>获取路径</string>
               </property>
              </widget>
             </item>

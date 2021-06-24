@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'QtADBClasstXIHzj.ui'
+** Form generated from reading UI file 'QtADBClassrSeMpj.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.11
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef QTADBCLASSTXIHZJ_H
-#define QTADBCLASSTXIHZJ_H
+#ifndef QTADBCLASSRSEMPJ_H
+#define QTADBCLASSRSEMPJ_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -55,9 +55,10 @@ public:
     QLabel *label_lujing;
     QFrame *frame_3;
     QGridLayout *gridLayout_2;
+    QFrame *frame_4;
     QPushButton *pushButton_refresh2;
     QPushButton *pushButton_back;
-    QFrame *frame_4;
+    QPushButton *pushButton_getlj;
     QListView *listView_2;
 
     void setupUi(QWidget *QtADBClass)
@@ -233,6 +234,13 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        frame_4 = new QFrame(frame_3);
+        frame_4->setObjectName(QString::fromUtf8("frame_4"));
+        frame_4->setFrameShape(QFrame::StyledPanel);
+        frame_4->setFrameShadow(QFrame::Raised);
+
+        gridLayout_2->addWidget(frame_4, 0, 1, 1, 1);
+
         pushButton_refresh2 = new QPushButton(frame_3);
         pushButton_refresh2->setObjectName(QString::fromUtf8("pushButton_refresh2"));
         QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -242,7 +250,7 @@ public:
         pushButton_refresh2->setSizePolicy(sizePolicy3);
         pushButton_refresh2->setFont(font1);
 
-        gridLayout_2->addWidget(pushButton_refresh2, 0, 2, 1, 1);
+        gridLayout_2->addWidget(pushButton_refresh2, 0, 3, 1, 1);
 
         pushButton_back = new QPushButton(frame_3);
         pushButton_back->setObjectName(QString::fromUtf8("pushButton_back"));
@@ -252,12 +260,11 @@ public:
 
         gridLayout_2->addWidget(pushButton_back, 0, 0, 1, 1);
 
-        frame_4 = new QFrame(frame_3);
-        frame_4->setObjectName(QString::fromUtf8("frame_4"));
-        frame_4->setFrameShape(QFrame::StyledPanel);
-        frame_4->setFrameShadow(QFrame::Raised);
+        pushButton_getlj = new QPushButton(frame_3);
+        pushButton_getlj->setObjectName(QString::fromUtf8("pushButton_getlj"));
+        pushButton_getlj->setFont(font1);
 
-        gridLayout_2->addWidget(frame_4, 0, 1, 1, 1);
+        gridLayout_2->addWidget(pushButton_getlj, 0, 2, 1, 1);
 
 
         gridLayout_7->addWidget(frame_3, 1, 0, 1, 1);
@@ -299,6 +306,7 @@ public:
         label_lujing->setText(QString());
         pushButton_refresh2->setText(QApplication::translate("QtADBClass", "\345\210\267\346\226\260", nullptr));
         pushButton_back->setText(QApplication::translate("QtADBClass", "<  \350\277\224\345\233\236", nullptr));
+        pushButton_getlj->setText(QApplication::translate("QtADBClass", "\350\216\267\345\217\226\350\267\257\345\276\204", nullptr));
     } // retranslateUi
 
 };
@@ -309,4 +317,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // QTADBCLASSTXIHZJ_H
+#endif // QTADBCLASSRSEMPJ_H

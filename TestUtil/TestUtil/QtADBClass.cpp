@@ -182,9 +182,7 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 
 		shell->waitForStarted();
 
-		shell->waitForReadyRead(10);
-
-		qApp->processEvents();
+		processEvent();
 
 		QByteArray outputData = shell->readAllStandardOutput();
 
@@ -226,8 +224,50 @@ void QtADBClass::TimerOut()
 
 	outputReady();
 
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut3()));
+
+	timer->start(100);
+
 	
 }
+
+void QtADBClass::TimerOut3()
+{
+	
+	timer->stop();
+
+	command = QString("ls -F\n");
+
+	qDebug() << "22" << shell->state();
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	outputReady();
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut5()));
+
+	timer->start(100);
+	
+}
+
+void QtADBClass::TimerOut5()
+{
+	timer->stop();
+	
+	on_pushButton_getlj_clicked();
+	
+}
+
+
+
 
 void QtADBClass::TimerOut2()
 {
@@ -245,6 +285,12 @@ void QtADBClass::TimerOut2()
 	ui.textEdit_ml->append(command);
 
 	outputReady();
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut3()));
+
+	timer->start(100);
 
 	
 }
@@ -386,6 +432,52 @@ void QtADBClass::on_pushButton_back_clicked()
 	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut()));
 
 	timer->start(0);
+}
+
+void QtADBClass::on_pushButton_getlj_clicked()
+{
+	command = QString("pwd\n");
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	ui.textEdit_jg->append(outputData);
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut4()));
+
+	timer->start(100);
+}
+
+void QtADBClass::TimerOut4()
+{
+
+	timer->stop();
+
+	command = QString("pwd\n");
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	ui.textEdit_jg->append(outputData);
+
+	ui.label_lujing->setText(outputData);
+
 }
 
 

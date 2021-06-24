@@ -50,7 +50,11 @@ public slots:
 	void outputReady();
 	void adbOutputReady();
 	void TimerOut();
+	void TimerOut3();
 	void TimerOut2();
+	void TimerOut4();
+	void TimerOut5();
+
 	void slotFinished(int);
 	void slotadbProcessFinished(int);
 	void show_contextmenu1(const QPoint& pos);
@@ -62,4 +66,5 @@ private slots:
 	void on_pushButton_refresh_clicked();
 	void on_pushButton_refresh2_clicked();
 	void on_pushButton_back_clicked();
+	void on_pushButton_getlj_clicked();
 };
