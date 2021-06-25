@@ -109,16 +109,80 @@ void QtADBClass::edit_menu1()
 
 	qDebug() << "pull is: " << output;
 
+	showMessageStr(PCfileName);
+
 }
 
 void QtADBClass::edit_menu2()
 {
 	qDebug() << "del" << currentIndex.row() << "->" << currentIndex.data();
+
+	QString PhonefilePath(ui.label_lujing->text().trimmed());
+
+	PhonefilePath = PhonefilePath.append("/").append(currentIndex.data().toString().trimmed());
+
+	qDebug() << "PhonefilePath: " << PhonefilePath;
+
+	command = QString("rm -r %1\n").arg(PhonefilePath);;
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	ui.textEdit_jg->append(outputData);
+
+
+	on_pushButton_refresh2_clicked();
 }
 
 void QtADBClass::edit_menu3()
 {
 	qDebug() << "update" << currentIndex.row() << "->" << currentIndex.data();
+
+	//子窗口和主窗口用法不同
+	QFileDialog *fd = new QFileDialog(this, Qt::SubWindow);
+
+	fd->setOption(QFileDialog::DontUseNativeDialog, true);
+
+	QString PCfileName = fd->getOpenFileName(0, "Select File", "D:\\", "Files (*.* *)", NULL, QFileDialog::DontUseNativeDialog);
+
+	PCfileName = PCfileName.replace(QRegExp("//"), "/");
+
+	PCfileName = PCfileName.replace(QRegExp("/"), "\\");
+
+	qDebug() << "PCfileName: " << PCfileName;
+
+	QString PhonefilePath(ui.label_lujing->text().trimmed());
+
+	PhonefilePath = PhonefilePath.append("/");
+
+	qDebug() << "PhonefilePath: " << PhonefilePath;
+
+	adb = new QProcess();
+
+	QString adbCommand = QString(".\\platform-tools\\adb.exe -s %1 push %2 %3").arg(device, PCfileName, PhonefilePath);
+
+	ui.textEdit_ml->append(adbCommand);
+
+	qDebug() << "program is: " << adbCommand;
+
+	adb->start(adbCommand);
+
+	processEvent();
+
+	QByteArray output = adb->readAllStandardOutput();
+
+	ui.textEdit_jg->append(output);
+
+	qDebug() << "push is: " << output;
+
+	on_pushButton_refresh2_clicked();
 }
 
 void QtADBClass::closeEvent(QCloseEvent *event)
@@ -362,7 +426,7 @@ void QtADBClass::outputReady()
 
 	int lastIndex = 0;
 
-	outputData.remove(0, 7);
+	//outputData.remove(0, 7);
 	
 	for (int i = 0; i < outputData.size(); i++)
 	{
@@ -521,5 +585,49 @@ void QtADBClass::TimerOut4()
 	ui.label_lujing->setText(outputData);
 
 }
+
+void QtADBClass::showMessageStr(QString msg)
+{
+
+	QTextCodec *codec = QTextCodec::codecForName("GBK");
+
+	QPushButton *okbtn = new QPushButton(QString::fromLocal8Bit("复制内容"));
+
+	QPushButton *cancelbtn = new QPushButton(codec->toUnicode(("关闭")));
+
+	QMessageBox *mymsgbox = new QMessageBox;
+
+	mymsgbox->addButton(okbtn, QMessageBox::AcceptRole);
+
+	mymsgbox->addButton(cancelbtn, QMessageBox::RejectRole);
+
+	mymsgbox->setWindowTitle(codec->toUnicode("详细"));
+
+	mymsgbox->setText(msg);
+
+	mymsgbox->show();
+
+	mymsgbox->exec();
+
+	if (mymsgbox->clickedButton() == okbtn)
+	{
+		string stdStrp = string(msg.toLocal8Bit());
+		//目前不知为何QT的剪切板功能不能使用？，使用C++的
+		HWND hWnd = NULL;
+		OpenClipboard(hWnd);//打开剪切板
+		EmptyClipboard();//清空剪切板
+		HANDLE hHandle = GlobalAlloc(GMEM_FIXED, 10000);//分配内存
+		char* pData = (char*)GlobalLock(hHandle);//锁定内存，返回申请内存的首地址
+		strcpy_s(pData, 10000, stdStrp.c_str());//或strcpy(pData, "this is a ClipBoard Test.");
+		SetClipboardData(CF_TEXT, hHandle);//设置剪切板数据
+		GlobalUnlock(hHandle);//解除锁定
+		CloseClipboard();//关闭剪切板
+	}
+	else
+	{
+		mymsgbox->close();
+	}
+
+};
 
 

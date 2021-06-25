@@ -15,6 +15,14 @@
 #include <QPoint>
 #include <QMenu>
 #include <QRegExp>
+#include <QTextCodec>
+#include <QMessageBox>
+
+#include <iostream>
+#include <windows.h>
+
+#pragma warning(disable : 4996)
+using namespace std;
 
 #include "ui_QtADBClass.h"
 
@@ -28,6 +36,7 @@ public:
 	void getDevices();
 	QString substring(QString string, int start, int end);
 	void processEvent();
+	void showMessageStr(QString msg);
 
 protected:
 	void closeEvent(QCloseEvent *event);
