@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QPoint>
 #include <QMenu>
+#include <QRegExp>
 
 #include "ui_QtADBClass.h"
 

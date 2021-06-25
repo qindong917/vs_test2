@@ -3,6 +3,7 @@
 QStringList leftList;
 QStringList rightList;
 QString command;
+QString device;
 
 QtADBClass::QtADBClass(QWidget *parent)
 	: QWidget(parent)
@@ -74,11 +75,40 @@ void QtADBClass::edit_menu1()
 
 	fd->setOption(QFileDialog::DontUseNativeDialog, true);
 
-	QString fileName = fd->getExistingDirectory(0, "Save File", "D:\\", QFileDialog::DontUseNativeDialog);
+	QString PCfileName = fd->getExistingDirectory(0, "Save File", "D:\\", QFileDialog::DontUseNativeDialog);
 
+	PCfileName = PCfileName.append("/").append(currentIndex.data().toString().trimmed());
 
+	PCfileName = PCfileName.replace(QRegExp("//"), "/");
 
-	qDebug() << fileName;
+	PCfileName = PCfileName.replace(QRegExp("/"), "\\");
+
+	qDebug() << "PCfileName: " << PCfileName;
+
+	QString PhonefilePath(ui.label_lujing->text().trimmed());
+
+	PhonefilePath = PhonefilePath.append("/").append(currentIndex.data().toString().trimmed());
+
+	qDebug() << "PhonefilePath: " << PhonefilePath;
+
+	adb = new QProcess();
+
+	QString adbCommand = QString(".\\platform-tools\\adb.exe -s %1 pull %2 %3").arg(device, PhonefilePath, PCfileName);
+
+	ui.textEdit_ml->append(adbCommand);
+
+	qDebug() << "program is: " << adbCommand;
+
+	adb->start(adbCommand);
+
+	processEvent();
+
+	QByteArray output = adb->readAllStandardOutput();
+
+	ui.textEdit_jg->append(output);
+
+	qDebug() << "pull is: " << output;
+
 }
 
 void QtADBClass::edit_menu2()
@@ -180,6 +210,7 @@ void QtADBClass::itemClicked(QModelIndex qIndex)
 {
 	qDebug() << qIndex.row() << "\n" << qIndex.data();
 
+	device = qIndex.data().toString();
 	// start process
 
 	
