@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'QtADBClassrSeMpj.ui'
+** Form generated from reading UI file 'QtADBClassneKPsp.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.11
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef QTADBCLASSRSEMPJ_H
-#define QTADBCLASSRSEMPJ_H
+#ifndef QTADBCLASSNEKPSP_H
+#define QTADBCLASSNEKPSP_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -37,13 +37,13 @@ public:
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout_5;
     QPushButton *pushButton_refresh;
-    QPushButton *pushButton_refresh_3;
+    QPushButton *pushButton_top_name;
     QPushButton *pushButton_refresh_9;
-    QPushButton *pushButton_refresh_4;
-    QPushButton *pushButton_refresh_6;
-    QPushButton *pushButton_refresh_8;
-    QPushButton *pushButton_refresh_5;
-    QPushButton *pushButton_refresh_7;
+    QPushButton *pushButton_screenshot;
+    QPushButton *pushButton_applist;
+    QPushButton *pushButton_uninstall;
+    QPushButton *pushButton_install;
+    QPushButton *pushButton_wifi_adb;
     QPushButton *pushButton_refresh_2;
     QGroupBox *groupBox_4;
     QGridLayout *gridLayout_3;
@@ -139,40 +139,46 @@ public:
 
         gridLayout_5->addWidget(pushButton_refresh, 0, 0, 1, 1);
 
-        pushButton_refresh_3 = new QPushButton(groupBox_3);
-        pushButton_refresh_3->setObjectName(QString::fromUtf8("pushButton_refresh_3"));
+        pushButton_top_name = new QPushButton(groupBox_3);
+        pushButton_top_name->setObjectName(QString::fromUtf8("pushButton_top_name"));
+        QFont font1;
+        font1.setPointSize(9);
+        pushButton_top_name->setFont(font1);
 
-        gridLayout_5->addWidget(pushButton_refresh_3, 2, 0, 1, 1);
+        gridLayout_5->addWidget(pushButton_top_name, 2, 0, 1, 1);
 
         pushButton_refresh_9 = new QPushButton(groupBox_3);
         pushButton_refresh_9->setObjectName(QString::fromUtf8("pushButton_refresh_9"));
 
         gridLayout_5->addWidget(pushButton_refresh_9, 2, 2, 1, 1);
 
-        pushButton_refresh_4 = new QPushButton(groupBox_3);
-        pushButton_refresh_4->setObjectName(QString::fromUtf8("pushButton_refresh_4"));
+        pushButton_screenshot = new QPushButton(groupBox_3);
+        pushButton_screenshot->setObjectName(QString::fromUtf8("pushButton_screenshot"));
 
-        gridLayout_5->addWidget(pushButton_refresh_4, 1, 2, 1, 1);
+        gridLayout_5->addWidget(pushButton_screenshot, 1, 2, 1, 1);
 
-        pushButton_refresh_6 = new QPushButton(groupBox_3);
-        pushButton_refresh_6->setObjectName(QString::fromUtf8("pushButton_refresh_6"));
+        pushButton_applist = new QPushButton(groupBox_3);
+        pushButton_applist->setObjectName(QString::fromUtf8("pushButton_applist"));
+        QFont font2;
+        font2.setPointSize(11);
+        pushButton_applist->setFont(font2);
 
-        gridLayout_5->addWidget(pushButton_refresh_6, 1, 1, 1, 1);
+        gridLayout_5->addWidget(pushButton_applist, 1, 1, 1, 1);
 
-        pushButton_refresh_8 = new QPushButton(groupBox_3);
-        pushButton_refresh_8->setObjectName(QString::fromUtf8("pushButton_refresh_8"));
+        pushButton_uninstall = new QPushButton(groupBox_3);
+        pushButton_uninstall->setObjectName(QString::fromUtf8("pushButton_uninstall"));
 
-        gridLayout_5->addWidget(pushButton_refresh_8, 0, 2, 1, 1);
+        gridLayout_5->addWidget(pushButton_uninstall, 0, 2, 1, 1);
 
-        pushButton_refresh_5 = new QPushButton(groupBox_3);
-        pushButton_refresh_5->setObjectName(QString::fromUtf8("pushButton_refresh_5"));
+        pushButton_install = new QPushButton(groupBox_3);
+        pushButton_install->setObjectName(QString::fromUtf8("pushButton_install"));
 
-        gridLayout_5->addWidget(pushButton_refresh_5, 0, 1, 1, 1);
+        gridLayout_5->addWidget(pushButton_install, 0, 1, 1, 1);
 
-        pushButton_refresh_7 = new QPushButton(groupBox_3);
-        pushButton_refresh_7->setObjectName(QString::fromUtf8("pushButton_refresh_7"));
+        pushButton_wifi_adb = new QPushButton(groupBox_3);
+        pushButton_wifi_adb->setObjectName(QString::fromUtf8("pushButton_wifi_adb"));
 
-        gridLayout_5->addWidget(pushButton_refresh_7, 1, 0, 1, 1);
+        gridLayout_5->addWidget(pushButton_wifi_adb, 1, 0, 1, 1);
 
         pushButton_refresh_2 = new QPushButton(groupBox_3);
         pushButton_refresh_2->setObjectName(QString::fromUtf8("pushButton_refresh_2"));
@@ -220,8 +226,6 @@ public:
         gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
         label_lujing = new QLabel(groupBox_2);
         label_lujing->setObjectName(QString::fromUtf8("label_lujing"));
-        QFont font1;
-        font1.setPointSize(9);
         label_lujing->setFont(font1);
 
         gridLayout_7->addWidget(label_lujing, 0, 0, 1, 1);
@@ -293,13 +297,13 @@ public:
         groupBox->setTitle(QApplication::translate("QtADBClass", "\350\256\276\345\244\207\345\210\227\350\241\250", nullptr));
         groupBox_3->setTitle(QApplication::translate("QtADBClass", "\345\212\237\350\203\275", nullptr));
         pushButton_refresh->setText(QApplication::translate("QtADBClass", "\345\210\267\346\226\260\350\256\276\345\244\207\345\210\227\350\241\250", nullptr));
-        pushButton_refresh_3->setText(QString());
+        pushButton_top_name->setText(QApplication::translate("QtADBClass", "\346\237\245\347\234\213\346\234\200\344\270\212\345\261\202activity\345\220\215\345\255\227", nullptr));
         pushButton_refresh_9->setText(QString());
-        pushButton_refresh_4->setText(QString());
-        pushButton_refresh_6->setText(QString());
-        pushButton_refresh_8->setText(QString());
-        pushButton_refresh_5->setText(QString());
-        pushButton_refresh_7->setText(QString());
+        pushButton_screenshot->setText(QApplication::translate("QtADBClass", "\346\210\252\345\261\217", nullptr));
+        pushButton_applist->setText(QApplication::translate("QtADBClass", "\345\272\224\347\224\250\345\210\227\350\241\250", nullptr));
+        pushButton_uninstall->setText(QApplication::translate("QtADBClass", "\345\215\270\350\275\275APP", nullptr));
+        pushButton_install->setText(QApplication::translate("QtADBClass", "\345\256\211\350\243\205APP", nullptr));
+        pushButton_wifi_adb->setText(QApplication::translate("QtADBClass", "\346\227\240\347\272\277ADB", nullptr));
         pushButton_refresh_2->setText(QString());
         groupBox_4->setTitle(QApplication::translate("QtADBClass", "\345\221\275\344\273\244\350\241\214", nullptr));
         groupBox_2->setTitle(QApplication::translate("QtADBClass", "\350\267\257\345\276\204", nullptr));
@@ -317,4 +321,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // QTADBCLASSRSEMPJ_H
+#endif // QTADBCLASSNEKPSP_H

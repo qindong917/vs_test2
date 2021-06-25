@@ -586,6 +586,50 @@ void QtADBClass::TimerOut4()
 
 }
 
+void QtADBClass::on_pushButton_install_clicked()
+{
+
+	//子窗口和主窗口用法不同
+	QFileDialog *fd = new QFileDialog(this, Qt::SubWindow);
+
+	fd->setOption(QFileDialog::DontUseNativeDialog, true);
+
+	QString PCfileName = fd->getOpenFileName(0, "Select File", "D:\\", "Files (*.apk *.APK)", NULL, QFileDialog::DontUseNativeDialog);
+
+	PCfileName = PCfileName.replace(QRegExp("//"), "/");
+
+	PCfileName = PCfileName.replace(QRegExp("/"), "\\");
+
+	qDebug() << "PCfileName: " << PCfileName;
+
+	QString PhonefilePath(ui.label_lujing->text().trimmed());
+
+	PhonefilePath = PhonefilePath.append("/");
+
+	qDebug() << "PhonefilePath: " << PhonefilePath;
+
+	adb = new QProcess();
+
+	QString adbCommand = QString(".\\platform-tools\\adb.exe -s %1 install -r %2").arg(device, PCfileName);
+
+	ui.textEdit_ml->append(adbCommand);
+
+	qDebug() << "program is: " << adbCommand;
+
+	adb->start(adbCommand);
+
+	processEvent();
+
+	QByteArray output = adb->readAllStandardOutput();
+
+	ui.textEdit_jg->append(output);
+
+	qDebug() << "push is: " << output;
+
+
+}
+
+
 void QtADBClass::showMessageStr(QString msg)
 {
 
