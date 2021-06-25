@@ -645,7 +645,7 @@ void QtADBClass::showMessageStr(QString msg)
 
 	mymsgbox->addButton(cancelbtn, QMessageBox::RejectRole);
 
-	mymsgbox->setWindowTitle(codec->toUnicode("ÏêÏ¸"));
+	mymsgbox->setWindowTitle(codec->toUnicode("Î»ÖÃ"));
 
 	mymsgbox->setText(msg);
 
