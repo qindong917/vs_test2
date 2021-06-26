@@ -242,7 +242,20 @@ void QtADBClass::edit_menu4()
 
 	qDebug() << "push is: " << output;
 
-	//on_pushButton_applist_clicked();
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut7()));
+
+	timer->start(2000);
+	
+}
+
+void QtADBClass::TimerOut7()
+{
+	timer->stop();
+
+	on_pushButton_applist_clicked();
+
 }
 
 void QtADBClass::edit_menu5()

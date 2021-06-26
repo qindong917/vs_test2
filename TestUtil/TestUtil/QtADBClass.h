@@ -70,6 +70,7 @@ public slots:
 	void TimerOut4();
 	void TimerOut5();
 	void TimerOut6();
+	void TimerOut7();
 
 	void slotFinished(int);
 	void slotadbProcessFinished(int);
