@@ -2,6 +2,7 @@
 
 QStringList leftList;
 QStringList rightList;
+QStringList packagesList;
 QString command;
 QString device;
 
@@ -9,6 +10,8 @@ QtADBClass::QtADBClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	packagesDialog = new QDialog(this);
 
 	rightItemModel = new QStringListModel(this);
 
@@ -626,6 +629,95 @@ void QtADBClass::on_pushButton_install_clicked()
 
 	qDebug() << "push is: " << output;
 
+
+}
+
+void QtADBClass::on_pushButton_applist_clicked()
+{
+
+	if(!shell->state()==QProcess::Running)
+	{ 
+		qDebug() << shell->state();
+		return;
+	}
+
+	command = QString("pm list packages\n");
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	ui.textEdit_jg->append(outputData);
+
+	timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()), this, SLOT(TimerOut6()));
+
+	timer->start(100);
+
+	
+
+}
+
+void QtADBClass::TimerOut6()
+{
+
+	timer->stop();
+
+	command = QString("pm list packages\n");
+
+	qDebug() << "command:" << command;
+
+	shell->write(command.toLocal8Bit());
+
+	processEvent();
+
+	ui.textEdit_ml->append(command);
+
+	QByteArray outputData = shell->readAllStandardOutput();
+
+	qDebug() << "pm list packages is: " << outputData;
+
+	ui.textEdit_jg->append(outputData);
+
+
+	packagesDialog->resize(QSize(800, 800));
+
+	QListView *listview=new QListView(packagesDialog);
+
+	listview->resize(QSize(800, 800));
+	
+	QStringListModel *packagesItemModel = new QStringListModel(this);
+
+	int lastIndex = 0;
+
+	for (int i = 0; i < outputData.size(); i++)
+	{
+		if (outputData[i] == '\n')
+		{
+			QString string = substring(QString(outputData), lastIndex, i);
+
+			lastIndex = i;
+
+			packagesList << string;
+		}
+	}
+
+	//stdÅÅÐò
+	sort(packagesList.begin(), packagesList.end(),
+		[](const QString & str1, const QString & str2) {return str1.compare(str2, Qt::CaseInsensitive) < 0; });
+
+	packagesItemModel->setStringList(packagesList);
+
+	listview->setModel(packagesItemModel);
+
+	packagesDialog->open();
 
 }
 

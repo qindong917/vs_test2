@@ -17,6 +17,7 @@
 #include <QRegExp>
 #include <QTextCodec>
 #include <QMessageBox>
+#include <QSize>
 
 #include <iostream>
 #include <windows.h>
@@ -53,6 +54,7 @@ private:
 	QProcess *adb;
 
 	QTimer *timer;
+	QDialog *packagesDialog;
 
 public slots:
 	void itemClicked(QModelIndex);
@@ -64,6 +66,7 @@ public slots:
 	void TimerOut2();
 	void TimerOut4();
 	void TimerOut5();
+	void TimerOut6();
 
 	void slotFinished(int);
 	void slotadbProcessFinished(int);
@@ -78,4 +81,5 @@ private slots:
 	void on_pushButton_back_clicked();
 	void on_pushButton_getlj_clicked();
 	void on_pushButton_install_clicked();
+	void on_pushButton_applist_clicked();
 };
