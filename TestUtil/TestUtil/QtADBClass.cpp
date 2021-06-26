@@ -11,7 +11,7 @@ QtADBClass::QtADBClass(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	packagesDialog = new QDialog(this);
+	
 
 	rightItemModel = new QStringListModel(this);
 
@@ -36,6 +36,15 @@ QtADBClass::QtADBClass(QWidget *parent)
 	ui.listView_2->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui.listView_2, SIGNAL(customContextMenuRequested(const QPoint&)),
 		this, SLOT(show_contextmenu1(const QPoint&)));
+
+	packagesDialog = new QDialog(this);
+	packageslistview = new QListView(packagesDialog);
+	packagesItemModel = new QStringListModel(this);
+	packagesDialog->resize(QSize(800, 800));
+	packageslistview->resize(QSize(800, 800));
+	packageslistview->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(packageslistview, SIGNAL(customContextMenuRequested(const QPoint&)),
+		this, SLOT(show_contextmenu2(const QPoint&)));
 	
 }
 
@@ -62,6 +71,26 @@ void QtADBClass::show_contextmenu1(const QPoint& pos)
 	connect(down, SIGNAL(triggered(bool)), this, SLOT(edit_menu1()));
 	connect(del, SIGNAL(triggered(bool)), this, SLOT(edit_menu2()));
 	connect(update, SIGNAL(triggered(bool)), this, SLOT(edit_menu3()));
+	cmenu->exec(QCursor::pos());//在当前鼠标位置显示
+	//cmenu->exec(pos)是在viewport显示
+
+}
+void QtADBClass::show_contextmenu2(const QPoint& pos)
+{
+	// if(cmenu)//保证同时只存在一个menu，及时释放内存
+	// {
+	// delete cmenu;
+	// cmenu = NULL;
+	// }
+	currentIndex = packageslistview->indexAt(pos);
+	qDebug() << "show_contextmenu1";
+	QMenu *cmenu = new QMenu(ui.listView_2);
+	QAction *unins = cmenu->addAction(QString::fromLocal8Bit("卸载"));
+	QAction *dcapk = cmenu->addAction(QString::fromLocal8Bit("导出apk"));
+	
+	connect(unins, SIGNAL(triggered(bool)), this, SLOT(edit_menu4()));
+	connect(dcapk, SIGNAL(triggered(bool)), this, SLOT(edit_menu5()));
+	
 	cmenu->exec(QCursor::pos());//在当前鼠标位置显示
 	//cmenu->exec(pos)是在viewport显示
 
@@ -186,6 +215,39 @@ void QtADBClass::edit_menu3()
 	qDebug() << "push is: " << output;
 
 	on_pushButton_refresh2_clicked();
+}
+
+void QtADBClass::edit_menu4()
+{
+	QString packagesname;
+
+	packagesname = packagesname.append(currentIndex.data().toString().trimmed());
+
+
+	adb = new QProcess();
+
+	QString adbCommand = QString(".\\platform-tools\\adb.exe -s %1 uninstall %2").arg(device, packagesname);
+
+	ui.textEdit_ml->append(adbCommand);
+
+	qDebug() << "program is: " << adbCommand;
+
+	adb->start(adbCommand);
+
+	processEvent();
+
+	QByteArray output = adb->readAllStandardOutput();
+
+	ui.textEdit_jg->append(output);
+
+	qDebug() << "push is: " << output;
+
+	//on_pushButton_applist_clicked();
+}
+
+void QtADBClass::edit_menu5()
+{
+
 }
 
 void QtADBClass::closeEvent(QCloseEvent *event)
@@ -686,14 +748,9 @@ void QtADBClass::TimerOut6()
 
 	ui.textEdit_jg->append(outputData);
 
+	packagesList.clear();
 
-	packagesDialog->resize(QSize(800, 800));
-
-	QListView *listview=new QListView(packagesDialog);
-
-	listview->resize(QSize(800, 800));
-	
-	QStringListModel *packagesItemModel = new QStringListModel(this);
+	packagesItemModel->removeRows(0, packagesItemModel->rowCount());
 
 	int lastIndex = 0;
 
@@ -705,6 +762,39 @@ void QtADBClass::TimerOut6()
 
 			lastIndex = i;
 
+			if (string.contains(":"))
+			{
+				string = string.split(":").at(1);
+			}
+
+			if (string.startsWith("android"))
+				continue;
+
+			if (string.startsWith("com.android"))
+				continue;
+			
+			if (string.startsWith("com.google"))
+				continue;
+
+			if (string.startsWith("com.miui"))
+				continue;
+
+			if (string.startsWith("miui"))
+				continue;
+
+			if (string.startsWith("com.xiaomi"))
+				continue;
+
+			if (string.startsWith("com.qti"))
+				continue;
+
+			if (string.startsWith("vendor.qti"))
+				continue;
+			
+			if (string.startsWith("com.qualcomm"))
+				continue;
+
+
 			packagesList << string;
 		}
 	}
@@ -713,9 +803,10 @@ void QtADBClass::TimerOut6()
 	sort(packagesList.begin(), packagesList.end(),
 		[](const QString & str1, const QString & str2) {return str1.compare(str2, Qt::CaseInsensitive) < 0; });
 
+
 	packagesItemModel->setStringList(packagesList);
 
-	listview->setModel(packagesItemModel);
+	packageslistview->setModel(packagesItemModel);
 
 	packagesDialog->open();
 

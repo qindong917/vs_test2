@@ -54,7 +54,10 @@ private:
 	QProcess *adb;
 
 	QTimer *timer;
+
 	QDialog *packagesDialog;
+	QListView *packageslistview;
+	QStringListModel *packagesItemModel;
 
 public slots:
 	void itemClicked(QModelIndex);
@@ -71,9 +74,12 @@ public slots:
 	void slotFinished(int);
 	void slotadbProcessFinished(int);
 	void show_contextmenu1(const QPoint& pos);
+	void show_contextmenu2(const QPoint& pos);
 	void edit_menu1();
 	void edit_menu2();
 	void edit_menu3();
+	void edit_menu4();
+	void edit_menu5();
 
 private slots:
 	void on_pushButton_refresh_clicked();
